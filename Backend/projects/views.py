@@ -65,19 +65,19 @@ def get_friend_requests(request):
         serilizedSolicitudesAmistad = SolicitudesAmistadSerializer(solicitudes,many=True,context={'request':request})
         return Response(data=serilizedSolicitudesAmistad.data, status=status.HTTP_200_OK)
 
-class Protegida(APIView):
-    permission_classes = [IsAuthenticated]
-    
-    def get(self, request):
-        return Response({"content": "Esta vista está protegida MAAAA"})
 
 @api_view(['GET'])
-def obtener_usuarios(request):
+@permission_classes([IsAuthenticated,])
+def obtener_usuario(request):
+    user_id_autenticado = request.user.id
+    print(request)
+
     try:
-        usuarios = Usuario.objects.all()
+        usuario = get_object_or_404(Usuario, id=user_id_autenticado)
     except Usuario.DoesNotExist:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'GET':
-        serilizedUsuarios = UserSerializer(usuarios,many=True,context={'request':request})
-        return Response(data=serilizedUsuarios.data, status=status.HTTP_200_OK)
+        serilizedUsuario = UserSerializer(usuario,context={'request':request})
+        return Response(data=serilizedUsuario.data, status=status.HTTP_200_OK)
+

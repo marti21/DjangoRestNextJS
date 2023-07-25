@@ -24,9 +24,8 @@ urlpatterns = [
     path('api/movies/all/', views.get_all_films, name='getAllFilms'),
     path('api/movies/by_genre/', views.get_genero_films, name='getGenreFilms'),
     path('api/friend/requests/', views.get_friend_requests, name='getFriendRequests'),
-    path('api/usuarios', views.obtener_usuarios),
+    path('api/me', views.obtener_usuario, name='getUser'),
 
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('protegida/', views.Protegida.as_view(), name='protegida')
 ]
